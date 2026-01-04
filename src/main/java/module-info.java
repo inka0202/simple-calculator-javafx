@@ -1,8 +1,8 @@
-module com.example.demo1 {
+module com.example.calculator {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens com.example.demo1 to javafx.fxml;
-    exports com.example.demo1;
+    opens com.example.calculator to javafx.fxml;
+    exports com.example.calculator;
 }
