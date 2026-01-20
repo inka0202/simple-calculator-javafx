@@ -19,24 +19,29 @@ public class CalculatorController {
     private boolean repeatedOnEquals = false;
     private  CalculatorLogic calculatorLogic = new CalculatorLogic();
 
-    @FXML
-    private void onDigitClick(ActionEvent event) {
+    private void appendDigit(String digit) {
         repeatedOnEquals = false;
 
-        Button btn = (Button) event.getSource();
         if (errorState) {
             displayField.clear();
             errorState = false;
         }
+
         if (startNew) {
             displayField.clear();
             startNew = false;
         }
-        if (btn.getText().equals(".") && displayField.getText().contains(".")) return;
 
-        displayField.appendText(btn.getText());
+        if (digit.equals(".") && displayField.getText().contains(".")) return;
+
+        displayField.appendText(digit);
     }
 
+    @FXML
+    private void onDigitClick(ActionEvent event) {
+        Button button = (Button) event.getSource();
+        appendDigit(button.getText());
+    }
 
     @FXML
     private void onOperatorClick(ActionEvent event) {
@@ -45,15 +50,11 @@ public class CalculatorController {
             return;
         }
         Button btn = (Button) event.getSource();
-        if(!displayField.getText().isEmpty()) {
-            firstNumber = Double.parseDouble(displayField.getText());
-            operator = btn.getText();
-            startNew = true;
-        }else {
-            firstNumber = 0;
-            operator = btn.getText();
-            startNew = true;
-        }
+        applyOperator(btn.getText());
+    }
+    @FXML
+    private void onCopyClick() {
+        applyOperator("/");
     }
 
     @FXML
@@ -106,5 +107,21 @@ public class CalculatorController {
         startNew = true;
         repeatedOnEquals = false;
         errorState = false;
+    }
+
+    private void applyOperator(String op) {
+        repeatedOnEquals = false;
+        if (errorState) return;
+
+        if (!displayField.getText().isEmpty()) {
+            firstNumber = Double.parseDouble(displayField.getText());
+
+        } else {
+            firstNumber = 0;
+
+        }
+
+        operator = op;
+        startNew = true;
     }
 }
